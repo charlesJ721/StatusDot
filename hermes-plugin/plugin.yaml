@@ -1,9 +1,9 @@
 name: statusdot
-version: 2.0.0
-description: "StatusDot Hermes integration — writes agent state to ~/.hermes/agent_status"
-author: ArsLonga
+version: 3.0.0
+description: "StatusDot v3 — multi-agent state via lifecycle hooks"
 hooks:
   - pre_llm_call
+  - post_llm_call
   - pre_tool_call
   - post_tool_call
   - pre_approval_request
