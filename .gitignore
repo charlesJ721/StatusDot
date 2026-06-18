@@ -1,0 +1,15 @@
+# Build artifacts
+StatusDot
+*.o
+
+# macOS
+.DS_Store
+*.app
+
+# IDE
+.idea/
+.vscode/
+*.xcworkspace
+
+# Temp
+/tmp/
