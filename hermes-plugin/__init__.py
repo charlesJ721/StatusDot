@@ -51,7 +51,7 @@ def _on_post_approval(**kwargs):
 def register(ctx):
     ctx.register_hook("pre_llm_call", _on_thinking)
     ctx.register_hook("pre_tool_call", _on_working)
-    ctx.register_hook("post_tool_call", lambda **_: None)
+    ctx.register_hook("post_tool_call", _on_thinking)
     ctx.register_hook("post_llm_call", _touch)
     ctx.register_hook("pre_approval_request", _on_waiting)
     ctx.register_hook("post_approval_response", _on_post_approval)
