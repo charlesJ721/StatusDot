@@ -15,6 +15,8 @@ import os, time, sqlite3, json
 STATUS_FILE  = os.path.expanduser("~/.hermes/agent_status")
 STATE_DB     = os.path.expanduser("~/.hermes/state.db")
 PREVIEW_LOCK = "/tmp/hermes_preview_active"
+PLUGIN_FLAG = os.path.expanduser("~/.hermes/.statusdot_plugin")
+TS_FILE     = os.path.expanduser("~/.hermes/.statusdot_ts")
 LOG_FILE     = os.path.expanduser("~/.hermes/status_bridge.log")
 POLL = 0.2
 MAX_MSGS = 8
@@ -133,7 +135,28 @@ def main():
     WORKING_MIN_SHOW = 1.5  # keep "working" visible for at least 1.5s
 
     while True:
-        if os.path.exists(PREVIEW_LOCK):
+        # Plugin active → bridge does IDLE detection only
+        if os.path.exists(PLUGIN_FLAG):
+            if os.path.exists(PREVIEW_LOCK):
+                time.sleep(POLL)
+                continue
+            # Read plugin's last activity timestamp
+            try:
+                with open(TS_FILE) as f:
+                    last_ts = float(f.read().strip())
+                idle = (time.time() - last_ts > 0.5)
+            except Exception:
+                idle = False
+            if idle:
+                try:
+                    current = ""
+                    if os.path.exists(STATUS_FILE):
+                        with open(STATUS_FILE) as f:
+                            current = f.read().strip()
+                    if current != "idle":
+                        atomic_write(STATUS_FILE, "idle")
+                except Exception:
+                    pass
             time.sleep(POLL)
             continue
 

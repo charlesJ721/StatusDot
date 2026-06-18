@@ -1,0 +1,10 @@
+name: statusdot
+version: 2.0.0
+description: "StatusDot Hermes integration — writes agent state to ~/.hermes/agent_status"
+author: ArsLonga
+hooks:
+  - pre_llm_call
+  - pre_tool_call
+  - post_tool_call
+  - pre_approval_request
+  - post_approval_response
